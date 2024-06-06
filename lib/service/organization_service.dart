@@ -63,5 +63,34 @@ class OrganizationService {
       throw Exception('Failed to load users');
     }
   }
+
+  Future<void> addProject({required Map<String, dynamic> projectData, required String accessToken}) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/project/createProject'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode(projectData),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to add project');
+    }
+  }
+    Future<void> addUser({required Map<String, dynamic> userData, required String accessToken}) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/user/createTeacher'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode(userData),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to add user');
+    }
+  }
 }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:open_us_for_all/feature/organiser/view/project_add_view.dart';
+import 'package:open_us_for_all/feature/organiser/view/teacher_add_view.dart';
 import 'package:open_us_for_all/feature/organiser/viewmodel/organization_view_model.dart';
 
 class OrganiserView extends ConsumerStatefulWidget {
@@ -183,7 +185,10 @@ class _OrganiserViewState extends ConsumerState<OrganiserView> {
                   children: [
                     InkWell(
                       onTap: () {
-                        //  context.go('/addOrganization');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProjectAddView()));
                       },
                       child: Container(
                         height: 50,
@@ -279,7 +284,14 @@ class _OrganiserViewState extends ConsumerState<OrganiserView> {
                 Row(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TeacherAddView(
+                                      roleId: 4,
+                                    )));
+                      },
                       child: Container(
                         height: 50,
                         width: 200,
@@ -322,17 +334,23 @@ class _OrganiserViewState extends ConsumerState<OrganiserView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           organizationCard(
-                            name: users[i]['firstName']+users[i]['lastName'],
+                            name: users[i]['firstName'] +
+                                " " +
+                                users[i]['lastName'],
                             mail: users[i]['mail'],
                           ),
                           if (i + 1 < users.length)
                             organizationCard(
-                              name: users[i + 1]['firstName']+users[i+1]['lastName'],
+                              name: users[i + 1]['firstName'] +
+                                  " " +
+                                  users[i + 1]['lastName'],
                               mail: users[i + 1]['mail'],
                             ),
                           if (i + 2 < users.length)
                             organizationCard(
-                              name: users[i + 2]['firstName']+users[i+2]['lastName'],
+                              name: users[i + 2]['firstName'] +
+                                  " " +
+                                  users[i + 2]['lastName'],
                               mail: users[i + 2]['mail'],
                             ),
                           if (i + 1 >= users.length)
@@ -372,7 +390,14 @@ class _OrganiserViewState extends ConsumerState<OrganiserView> {
                 Row(
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TeacherAddView(
+                                      roleId: 2,
+                                    )));
+                      },
                       child: Container(
                         height: 50,
                         width: 200,
@@ -415,17 +440,23 @@ class _OrganiserViewState extends ConsumerState<OrganiserView> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           organizationCard(
-                            name: users[i]['firstName']+users[i]['lastName'],
+                            name: users[i]['firstName'] +
+                                " " +
+                                users[i]['lastName'],
                             mail: users[i]['mail'],
                           ),
                           if (i + 1 < users.length)
                             organizationCard(
-                              name: users[i + 1]['firstName']+users[i+1]['lastName'],
+                              name: users[i + 1]['firstName'] +
+                                  " " +
+                                  users[i + 1]['lastName'],
                               mail: users[i + 1]['mail'],
                             ),
                           if (i + 2 < users.length)
                             organizationCard(
-                              name: users[i + 2]['firstName']+users[i+2]['lastName'],
+                              name: users[i + 2]['firstName'] +
+                                  " " +
+                                  users[i + 2]['lastName'],
                               mail: users[i + 2]['mail'],
                             ),
                           if (i + 1 >= users.length)
