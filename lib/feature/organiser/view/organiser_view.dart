@@ -15,12 +15,18 @@ class _OrganiserViewState extends ConsumerState<OrganiserView> {
   @override
   void initState() {
     super.initState();
-    ref.read(organizationViewModelProvider.notifier).fetchProjects();
+    Future.microtask(() {
+      ref.read(projectsProvider.notifier).fetchProjects();
+      ref.read(teachersProvider.notifier).fetchTeachers();
+      ref.read(studentsProvider.notifier).fetchStudents();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final projects = ref.watch(organizationViewModelProvider);
+    final projects = ref.watch(projectsProvider);
+    final teachers = ref.watch(teachersProvider);
+    final students = ref.watch(studentsProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -150,8 +156,8 @@ class _OrganiserViewState extends ConsumerState<OrganiserView> {
       body: pageStatus == 'project'
           ? projectBody(projects: projects)
           : pageStatus == 'student'
-              ? studentBody()
-              : studentBody(),
+              ? studentBody(users: students)
+              : teacherBody(users: teachers),
     );
   }
 
@@ -252,7 +258,7 @@ class _OrganiserViewState extends ConsumerState<OrganiserView> {
     );
   }
 
-  Column studentBody() {
+  Column studentBody({List<Map<String, dynamic>>? users}) {
     return Column(
       children: [
         Expanded(
@@ -273,9 +279,7 @@ class _OrganiserViewState extends ConsumerState<OrganiserView> {
                 Row(
                   children: [
                     InkWell(
-                      onTap: () {
-                        //  context.go('/addOrganization');
-                      },
+                      onTap: () {},
                       child: Container(
                         height: 50,
                         width: 200,
@@ -309,112 +313,130 @@ class _OrganiserViewState extends ConsumerState<OrganiserView> {
                   color: Colors.grey.shade100,
                   borderRadius: BorderRadius.all(Radius.circular(24))),
               child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: SingleChildScrollView(
+                padding: const EdgeInsets.all(10.0),
+                child: SingleChildScrollView(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
+                  children: [
+                    for (int i = 0; i < users!.length; i += 3)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          organizationCard(
+                            name: users[i]['firstName']+users[i]['lastName'],
+                            mail: users[i]['mail'],
+                          ),
+                          if (i + 1 < users.length)
                             organizationCard(
-                                name: "Utku Doğrusöz",
-                                mail: "utku.dogrusoz@stu.khas.edu.tr"),
+                              name: users[i + 1]['firstName']+users[i+1]['lastName'],
+                              mail: users[i + 1]['mail'],
+                            ),
+                          if (i + 2 < users.length)
                             organizationCard(
-                                name: "İlayda Kaya",
-                                mail: "ilayda.kaya@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "Mariya Aygül",
-                                mail: "mariya.aygul@stu.khas.edu.tr"),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            organizationCard(
-                                name: "Utku Doğrusöz",
-                                mail: "utku.dogrusoz@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "İlayda Kaya",
-                                mail: "ilayda.kaya@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "Mariya Aygül",
-                                mail: "mariya.aygul@stu.khas.edu.tr"),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            organizationCard(
-                                name: "Utku Doğrusöz",
-                                mail: "utku.dogrusoz@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "İlayda Kaya",
-                                mail: "ilayda.kaya@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "Mariya Aygül",
-                                mail: "mariya.aygul@stu.khas.edu.tr"),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            organizationCard(
-                                name: "Utku Doğrusöz",
-                                mail: "utku.dogrusoz@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "İlayda Kaya",
-                                mail: "ilayda.kaya@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "Mariya Aygül",
-                                mail: "mariya.aygul@stu.khas.edu.tr"),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            organizationCard(
-                                name: "Utku Doğrusöz",
-                                mail: "utku.dogrusoz@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "İlayda Kaya",
-                                mail: "ilayda.kaya@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "Mariya Aygül",
-                                mail: "mariya.aygul@stu.khas.edu.tr"),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            organizationCard(
-                                name: "Utku Doğrusöz",
-                                mail: "utku.dogrusoz@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "İlayda Kaya",
-                                mail: "ilayda.kaya@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "Mariya Aygül",
-                                mail: "mariya.aygul@stu.khas.edu.tr"),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            organizationCard(
-                                name: "Utku Doğrusöz",
-                                mail: "utku.dogrusoz@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "İlayda Kaya",
-                                mail: "ilayda.kaya@stu.khas.edu.tr"),
-                            organizationCard(
-                                name: "Mariya Aygül",
-                                mail: "mariya.aygul@stu.khas.edu.tr"),
-                          ],
-                        ),
-                      ],
+                              name: users[i + 2]['firstName']+users[i+2]['lastName'],
+                              mail: users[i + 2]['mail'],
+                            ),
+                          if (i + 1 >= users.length)
+                            Expanded(child: Container()), // Boş alan için
+                          if (i + 2 >= users.length)
+                            Expanded(child: Container()), // Boş alan için
+                        ],
+                      ),
+                  ],
+                )),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Column teacherBody({List<Map<String, dynamic>>? users}) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 100.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Teachers",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.blueGrey,
+                  ),
+                ),
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        height: 50,
+                        width: 200,
+                        decoration: const BoxDecoration(
+                            color: Colors.blueGrey,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: const Center(
+                            child: Text(
+                          'Add Teacher',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        )),
+                      ),
                     ),
-                  )),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 5,
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 100.0, right: 100.0, bottom: 10),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.all(Radius.circular(24))),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SingleChildScrollView(
+                    child: Column(
+                  children: [
+                    for (int i = 0; i < users!.length; i += 3)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          organizationCard(
+                            name: users[i]['firstName']+users[i]['lastName'],
+                            mail: users[i]['mail'],
+                          ),
+                          if (i + 1 < users.length)
+                            organizationCard(
+                              name: users[i + 1]['firstName']+users[i+1]['lastName'],
+                              mail: users[i + 1]['mail'],
+                            ),
+                          if (i + 2 < users.length)
+                            organizationCard(
+                              name: users[i + 2]['firstName']+users[i+2]['lastName'],
+                              mail: users[i + 2]['mail'],
+                            ),
+                          if (i + 1 >= users.length)
+                            Expanded(child: Container()), // Boş alan için
+                          if (i + 2 >= users.length)
+                            Expanded(child: Container()), // Boş alan için
+                        ],
+                      ),
+                  ],
+                )),
+              ),
             ),
           ),
         ),
